@@ -1,7 +1,7 @@
 import { TestingModule, Test } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { internet, datatype, random } from 'faker';
+import { internet, datatype } from 'faker';
 import { AuthCredentialDto } from './dto/auth-credential.dto';
 import { ConflictException, UnauthorizedException } from '@nestjs/common';
 
@@ -43,7 +43,7 @@ describe('Auth controller', () => {
         const found = mockedUsers.find((mock) => {
           return (
             mock.username === dto.username &&
-            mock.password === `rashed_${dto.password}`
+            mock.password === `hashed_${dto.password}`
           );
         });
 
@@ -93,9 +93,13 @@ describe('Auth controller', () => {
   });
 
   it('should return access token for valid user', async () => {
-    const response = await authController.singIn(mockedUsers[0]);
+    const credentials = {
+      username: mockedUsers[0].username,
+      password: mockedUsers[0].password.replace('hashed_', ''),
+    };
+    const response = await authController.singIn(credentials);
     expect(response.accessToken).toBeDefined();
-    expect(mockedAuthService.singIn).toBeCalledWith(mockedUsers[0]);
+    expect(mockedAuthService.singIn).toBeCalledWith(credentials);
   });
 
   it('should throws unauthorizedException for invalid user', async () => {
