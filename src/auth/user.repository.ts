@@ -8,8 +8,8 @@ import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
 
 @EntityRepository(User)
-export class UsersRepository extends Repository<User> {
-  async createUser(authCredentialDto: AuthCredentialDto): Promise<void> {
+export class UserRepository extends Repository<User> {
+  async createUser(authCredentialDto: AuthCredentialDto): Promise<User> {
     const { username, password } = authCredentialDto;
 
     const salt = await bcrypt.genSalt();
@@ -21,7 +21,7 @@ export class UsersRepository extends Repository<User> {
     });
 
     try {
-      await this.save(user);
+      return this.save(user);
     } catch (error) {
       const uniqueErrorCode = '23505';
       if (error.code === uniqueErrorCode) {
