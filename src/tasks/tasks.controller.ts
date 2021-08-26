@@ -11,6 +11,7 @@ import {
   HttpStatus,
   UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../auth/get-user.decorator';
 import { User } from '../auth/user.entity';
@@ -25,6 +26,7 @@ import { TasksService } from './tasks.service';
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
+  @ApiBearerAuth()
   @Get()
   public getTasks(
     @Query() filterDto: GetTaskWithFilterDto,
@@ -33,6 +35,7 @@ export class TasksController {
     return this.tasksService.getTasks(filterDto, user);
   }
 
+  @ApiBearerAuth()
   @Get('/:taskId')
   public getTaskById(
     @Param('taskId') taskId: string,
@@ -41,6 +44,7 @@ export class TasksController {
     return this.tasksService.getTaskById(taskId, user);
   }
 
+  @ApiBearerAuth()
   @Post()
   public createTask(
     @Body() createTaskDto: CreateTaskDto,
@@ -49,6 +53,7 @@ export class TasksController {
     return this.tasksService.createTask(createTaskDto, user);
   }
 
+  @ApiBearerAuth()
   @Delete('/:taskId')
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteTask(
@@ -58,6 +63,7 @@ export class TasksController {
     await this.tasksService.deleteTask(taskId, user);
   }
 
+  @ApiBearerAuth()
   @Patch('/:taskId/status')
   async updateTaskStatus(
     @Param('taskId') taskId: string,
