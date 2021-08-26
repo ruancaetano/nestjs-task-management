@@ -7,7 +7,6 @@ import { User } from '../auth/user.entity';
 import { TaskStatus } from './task-status.enum';
 import { GetTaskWithFilterDto } from './dto/get-task-with-filter.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { TaskRepository } from './task.repository';
 
 describe('Tasks service', () => {
